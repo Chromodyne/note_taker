@@ -22,6 +22,11 @@ app.get("/notes", (req, res) => {
     res.sendFile(path.join(__dirname,"./public/notes.html"));
 });
 
+//Retrieves the notes stored in db.json
+app.get("/api/notes", (req, res) => {
+    return res.status(200).json(db);
+});
+
 app.listen(PORT, () => {
     console.log(`Server listening on PORT ${PORT}`);
 });
