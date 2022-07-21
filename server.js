@@ -27,6 +27,14 @@ app.get("/api/notes", (req, res) => {
     return res.status(200).json(db);
 });
 
+//TODO: Save note routing.
+app.post("/api/notes", (req, res) => {
+    res.json(`Server received ${req.method} request for saving a note.`);
+
+    console.log(`Client successfully sent ${req.method} request for saving a note.`);
+
+});
+
 app.listen(PORT, () => {
     console.log(`Server listening on PORT ${PORT}`);
 });
