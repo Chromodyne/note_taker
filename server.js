@@ -2,6 +2,7 @@
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
+const db = require("./db/db.json")
 
 //Setup which port to use. If local use 3001.
 const PORT = process.env.PORT || 3001;
@@ -22,5 +23,5 @@ app.get("/notes", (req, res) => {
 });
 
 app.listen(PORT, () => {
-    console.log(`Server listening on port: ${PORT}`);
+    console.log(`Server listening on PORT ${PORT}`);
 });
