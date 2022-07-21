@@ -14,9 +14,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 
-//TODO: Add routing.
+//TODO: Add modular routing.
 
-
+//Get the notes.html when requested.
+app.get("/notes", (req, res) => {
+    res.sendFile(path.join(__dirname,"./public/notes.html"));
+});
 
 app.listen(PORT, () => {
     console.log(`Server listening on port: ${PORT}`);
