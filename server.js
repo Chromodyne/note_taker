@@ -2,7 +2,8 @@
 const fs = require("fs");
 const path = require("path");
 const express = require("express");
-const db = require("./db/db.json")
+const uniqid = require("uniqid");
+const db = require("./db/db.json");
 
 //Setup which port to use. If local use 3001.
 const PORT = process.env.PORT || 3001;
@@ -30,21 +31,23 @@ app.get("/api/notes", (req, res) => {
 //Listens for a post request for saving notes before 
 app.post("/api/notes", (req, res) => {
 
-    //TODO: We need to get the information passed in from the body and then write it to the db.json
-    //before we return a response.
-
+    //Give feedback both in server console and through API console.
     res.json(`Server received ${req.method} request for saving a note.`);
     console.log(`Client successfully sent ${req.method} request for saving a note.`);
 
     //Destructure request body to use keys.
     const { title, text } = req.body;
+    
+    //Generates a unique id for the object to be placed in the JSON.
+    const id = uniqid();
 
     //Check if the request has both title and text keys.
     if (title && text) {
 
         const newNote = {
             title,
-            text
+            text,
+            id      //Generated above. Does NOT come from index.js
         }
 
         //Read the the db.json file to parse the old data.
@@ -62,11 +65,20 @@ app.post("/api/notes", (req, res) => {
             }
         });
 
-    } else {
+        return res.status(201);
 
     }
-    
+
 });
+
+//OPTIONAL TODO: Use this to handle deleting of notes. Get id parameter for functionality.
+// app.delete("/api/notes/:id", (req, res) => {
+
+//     //WHAT DO I WANT THIS TO DO?
+//     // IT NEEDS TO REMOVE THE NOTE WITH THE SPECIFIED ID FROM THE DB.JSON
+
+
+// });
 
 //Have express server begin listening on defined port.
 app.listen(PORT, () => {
