@@ -68,10 +68,8 @@ app.post("/api/notes", (req, res) => {
 
         //NOTE: For some reason the list on the left will not update until the server is 
         //restarted.  Everything seems correct in the index.js
-        //Apparently the routing might need to be promisified but I have no
-        //idea how to implement that as it was not something we were taught or something
-        //I can find pertinent information online for.
-
+        //Apparently the routing might need to be promisified but I have had little luck
+        //implementing it.
         res.status(201);
 
     }
