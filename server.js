@@ -4,6 +4,7 @@ const path = require("path");
 const express = require("express");
 const uniqid = require("uniqid");
 const db = require("./db/db.json");
+const { nextTick } = require("process");
 
 //Setup which port to use. If local use 3001.
 const PORT = process.env.PORT || 3001;
@@ -32,7 +33,7 @@ app.get("/api/notes", (req, res) => {
 app.post("/api/notes", (req, res) => {
 
     //Give feedback both in server console and through API console.
-    res.json(`Server received ${req.method} request for saving a note.`);
+    //res.json(`Server received ${req.method} request for saving a note.`);
     console.log(`Client successfully sent ${req.method} request for saving a note.`);
 
     //Destructure request body to use keys.
@@ -50,7 +51,7 @@ app.post("/api/notes", (req, res) => {
             id      //Generated above. Does NOT come from index.js
         }
 
-        //Read the the db.json file to parse the old data.
+        //Read the db.json file to parse the old data.
         fs.readFile("./db/db.json", "utf8", (err, data) => {
             if (err) {
                 console.error(err);
@@ -60,25 +61,28 @@ app.post("/api/notes", (req, res) => {
                 fs.writeFile("./db/db.json", JSON.stringify(parseOldNotes, null, 2), (showError) => {
                     if (showError) {
                         console.error(showError);
-                    } 
+                    }
                 })
             }
         });
 
-        return res.status(201);
+        //NOTE: For some reason the list on the left will not update until the server is 
+        //restarted.  Everything seems correct in the index.js
+        //Apparently the routing might need to be promisified but I have no
+        //idea how to implement that as it was not something we were taught or something
+        //I can find pertinent information online for.
+
+        res.status(201);
 
     }
 
 });
 
 //OPTIONAL TODO: Use this to handle deleting of notes. Get id parameter for functionality.
-// app.delete("/api/notes/:id", (req, res) => {
+app.delete("/api/notes/:id", (req, res) => {
+    const elToDelete = req.params.id;
 
-//     //WHAT DO I WANT THIS TO DO?
-//     // IT NEEDS TO REMOVE THE NOTE WITH THE SPECIFIED ID FROM THE DB.JSON
-
-
-// });
+});
 
 //Have express server begin listening on defined port.
 app.listen(PORT, () => {
